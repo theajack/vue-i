@@ -1,7 +1,16 @@
-import reactive from './reactive';
-import Watcher from './watcher';
-import computed from './computed';
-import watch from './watch';
+import reactive from './core/reactive';
+import Watcher from './core/watcher';
+import computed from './core/computed';
+import watch from './core/watch';
+
+let app = document.createElement('div');
+let app2 = document.createElement('div');
+
+app.setAttribute('id', 'app');
+app2.setAttribute('id', 'app2');
+
+document.body.append(app);
+document.body.append(app2);
 
 const data = reactive({
     msg: 'Hello World',
@@ -20,7 +29,6 @@ new Watcher(() => {
     `;
 });
 
-
 watch(
     () => data.msg,
     (newVal, oldVal) => {
@@ -29,4 +37,3 @@ watch(
     }
 );
 window.data = data;
-  
