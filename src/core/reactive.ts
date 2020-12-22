@@ -1,8 +1,9 @@
+import {Json} from '../types/core';
 import Dep from './dep';
 import {isObject} from './utils';
 
 // 将对象定义为响应式
-export default function reactive (data) {
+export default function reactive (data: Json): Json {
     if (isObject(data)) {
         Object.keys(data).forEach(key => {
             defineReactive(data, key);
@@ -11,7 +12,7 @@ export default function reactive (data) {
     return data;
 }
 
-function defineReactive (data, key) {
+function defineReactive (data: Json, key: string): void {
     let val = data[key];
     // 收集依赖
     const dep = new Dep();

@@ -2,9 +2,11 @@ import reactive from './core/reactive';
 import Watcher from './core/watcher';
 import computed from './core/computed';
 import watch from './core/watch';
+import {queryById} from './core/utils';
+import {Json} from './types/core';
 
-let app = document.createElement('div');
-let app2 = document.createElement('div');
+const app = document.createElement('div');
+const app2 = document.createElement('div');
 
 app.setAttribute('id', 'app');
 app2.setAttribute('id', 'app2');
@@ -19,21 +21,27 @@ const data = reactive({
 
 new Watcher(() => {
     console.log('update');
-    document.getElementById('app').innerHTML = `msg is ${data.msg}`;
+    queryById('app').innerHTML = `msg is ${data.msg}`;
 });
 
 const numberPlusOne = computed(() => data.number + 1);
 new Watcher(() => {
-    document.getElementById('app2').innerHTML = `
+    queryById('app2').innerHTML = `
       computed: 1 + number 是 ${numberPlusOne.value}
     `;
 });
 
 watch(
     () => data.msg,
-    (newVal, oldVal) => {
+    (newVal: any, oldVal: any) => {
         console.log('newVal: ', newVal);
         console.log('old: ', oldVal);
     }
 );
+
+declare global{
+    interface Window {
+        data: Json;
+    }
+}
 window.data = data;

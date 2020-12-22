@@ -1,27 +1,28 @@
+import Watcher from './watcher';
+
 export default class Dep {
+    private deps = new Set<Watcher>();
+    static target: Watcher | undefined;
     constructor () {
-        this.deps = new Set();
+        this.deps = new Set<Watcher>();
     }
   
-    depend () {
+    depend (): void {
         if (Dep.target) {
             this.deps.add(Dep.target);
         }
     }
   
-    notify () {
-        this.deps.forEach(watcher => watcher.update());
+    notify (): void {
+        this.deps.forEach((watcher: Watcher) => watcher.update());
     }
 }
-  
-// 正在运行的watcher
-Dep.target = null;
-  
+
 // watcher栈
-const targetStack = [];
+const targetStack: Watcher[] = [];
 
 // 将上一个watcher推到栈里，更新Dep.target为传入的_target变量。
-export function pushTarget (_target) {
+export function pushTarget (_target: Watcher) {
     if (Dep.target) targetStack.push(Dep.target);
     Dep.target = _target;
 }

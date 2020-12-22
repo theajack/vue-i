@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
     mode: 'development',
-    entry: path.resolve('./', 'src/index.js'),
+    entry: path.resolve('./', 'src/index.ts'),
     output: {
         path: path.resolve('./', 'public'),
         filename: 'bundle.js'
@@ -16,8 +16,16 @@ module.exports = {
         proxy: {
         },
     },
+    resolve: {
+        extensions: [ '.tsx', '.ts', '.js' ]
+    },
     module: {
         rules: [{
+            test: /(.ts)$/,
+            use: {
+                loader: 'ts-loader'
+            }
+        }, {
             test: /(.js)$/,
             use: [{
                 loader: 'babel-loader',

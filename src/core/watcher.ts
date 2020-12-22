@@ -1,8 +1,15 @@
 // Watcher
+import {IGetter, IWatcherOption} from '../types/core';
 import Dep, {pushTarget, popTarget} from './dep';
 
 export default class Watcher {
-    constructor (getter, options = {}) {
+    private computed: boolean | undefined;
+    private watch: boolean | undefined;
+    private callback: any;
+    private value: any;
+    private getter: IGetter;
+    private dep: Dep;
+    constructor (getter: IGetter, options: IWatcherOption = {}) {
         const {computed, watch, callback} = options;
         this.getter = getter;
         this.computed = computed;
@@ -18,7 +25,7 @@ export default class Watcher {
     
     }
 
-    get () {
+    get (): any {
         pushTarget(this);
         this.value = this.getter();
         popTarget();
@@ -26,11 +33,11 @@ export default class Watcher {
     }
 
     // 仅为computed使用
-    depend () {
+    depend (): void {
         this.dep.depend();
     }
 
-    update () {
+    update (): void {
         if (this.computed) {
             this.get();
             this.dep.notify();

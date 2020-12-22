@@ -1,8 +1,9 @@
 // computed
+import {IGetter} from '../types/core';
 import Watcher from './watcher';
  
-export default function computed (getter) {
-    let def = {};
+export default function computed (getter: IGetter): {value?: any} {
+    const def = {};
     const computedWatcher = new Watcher(getter, {computed: true});
     Object.defineProperty(def, 'value', {
         get () {
